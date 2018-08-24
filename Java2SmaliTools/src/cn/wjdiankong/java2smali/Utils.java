@@ -27,6 +27,7 @@ public class Utils {
 				if(isOutputLog)
 					System.out.println(line);
 			}
+			//在这里新增了文件错误流的输出，p.getErrorStream()
 			err = new BufferedReader(new InputStreamReader(p.getErrorStream()));
 	        	line = null;
                 	while ((line = err.readLine()) != null) {
