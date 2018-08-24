@@ -9,21 +9,31 @@ import java.io.InputStreamReader;
 public class Utils {
 	
 	/**
-	 * Ö´ĞĞÃüÁî
+	 * æ‰§è¡Œå‘½ä»¤
 	 * @param cmd
 	 * @param isOutputLog
 	 * @return
 	 */
 	public static boolean execCmd(String cmd, boolean isOutputLog){
 		BufferedReader br = null;
+		BufferedReader err = null;
 		try {
-			Process p = Runtime.getRuntime().exec(cmd);
+			//Process p = Runtime.getRuntime().exec(cmd);
+			String[] c = new String[]{"/bin/sh","-c", cmd};
+		        Process p = Runtime.getRuntime().exec(c);
 			br = new BufferedReader(new InputStreamReader(p.getInputStream()));
 			String line = null;
 			while ((line = br.readLine()) != null) {
 				if(isOutputLog)
 					System.out.println(line);
 			}
+			err = new BufferedReader(new InputStreamReader(p.getErrorStream()));
+	        	line = null;
+                	while ((line = err.readLine()) != null) {
+                    		if(isOutputLog)
+                        	         System.out.println(line);
+                	}
+
 		} catch (Exception e) {
 			System.out.println("cmd error:"+e.toString());
 		} finally {
@@ -34,12 +44,20 @@ public class Utils {
 					e.printStackTrace();
 				}
 			}
+			 if(err !=null){
+              			  try{
+                    			err.close();
+                		  }catch (Exception e){
+                 			   e.printStackTrace();
+              			 }
+          		  }
+
 		}
 		return true;
 	}
 	
 	/** 
-	 * ÎÄ¼ş¿½±´µÄ·½·¨ 
+	 * æ–‡ä»¶æ‹·è´çš„æ–¹æ³• 
 	 */  
 	public static boolean fileCopy(String src, String des) {  
 		FileInputStream fis = null;
@@ -53,14 +71,14 @@ public class Utils {
 				fos.write(buffer, 0, len);
 			}  
 		} catch (Exception e) {  
-			System.out.println("¿½±´ÎÄ¼şÊ§°Ü:"+e.toString());
+			System.out.println("æ‹·è´æ–‡ä»¶å¤±è´¥:"+e.toString());
 			return false;
 		}finally{  
 			try {  
 				if(fis!=null)  fis.close();  
 				if(fos!=null)  fos.close();  
 			} catch (Exception e) {  
-				System.out.println("¿½±´ÎÄ¼şÊ§°Ü:"+e.toString());
+				System.out.println("æ‹·è´æ–‡ä»¶å¤±è´¥:"+e.toString());
 				return false;
 			} 
 		}
@@ -86,7 +104,7 @@ public class Utils {
 	}
 	
 	/**
-	 * »ñÈ¡SDKµÄxmlÖĞÅäÖÃĞÅÏ¢
+	 * è·å–SDKçš„xmlä¸­é…ç½®ä¿¡æ¯
 	 * @param fileName
 	 */
 	public static String getClassPkgName(String fileName){  

@@ -21,7 +21,7 @@ public class Java2SmaliTools {
 	
 	public static void main(String[] args){
 		
-		//µÚÒ»²½£º±àÒëjavaÎÄ¼ş¼ĞÏÂÃæËùÓĞµÄjavaÎÄ¼ş
+		//ç¬¬ä¸€æ­¥ï¼šç¼–è¯‘javaæ–‡ä»¶å¤¹ä¸‹é¢æ‰€æœ‰çš„javaæ–‡ä»¶
 		File javaDirFile = new File(JAVADIR);
 		if(!javaDirFile.exists()){
 			System.out.println("java dir is not exist!");
@@ -33,7 +33,7 @@ public class Java2SmaliTools {
 		}
 		
 		String javaCmd = "javac -classpath lib" + sysSeparator + "android.jar " + JAVA_PATH + "*.java";
-		boolean isSucc = Utils.execCmd(javaCmd, false);
+		boolean isSucc = Utils.execCmd(javaCmd, true);//trueå¼€å¯æ—¥å¿—
 		if(!isSucc){
 			System.out.println("compile java file: is error!");
 			return;
@@ -68,21 +68,21 @@ public class Java2SmaliTools {
 			}
 		}
 		
-		//µÚ¶ş²½£ºÀûÓÃdxÃüÁî½«classÎÄ¼ş±ä³ÉdexÎÄ¼ş
+		//ç¬¬äºŒæ­¥ï¼šåˆ©ç”¨dxå‘½ä»¤å°†classæ–‡ä»¶å˜æˆdexæ–‡ä»¶
 		File smaliDirFile = new File(SMALIDIR);
 		if(!smaliDirFile.exists()){
 			smaliDirFile.mkdirs();
 		}
 		String dxCmd = "java -jar lib" + sysSeparator + "dx.jar --dex --output=" + DEXNAME + " " + CLASSDIR;
-		boolean isdxSucc = Utils.execCmd(dxCmd, false);
+		boolean isdxSucc = Utils.execCmd(dxCmd, true);
 		if(!isdxSucc){
 			System.out.println("class file to classes.dex is error!");
 			return;
 		}
 		
-		//µÚÈı²½£ºÀûÓÃsmali½«dexÎÄ¼ş±ä³ÉsmaliÎÄ¼ş
+		//ç¬¬ä¸‰æ­¥ï¼šåˆ©ç”¨smaliå°†dexæ–‡ä»¶å˜æˆsmaliæ–‡ä»¶
 		String smaliCmd = "java -jar lib" + sysSeparator + "baksmali.jar -o " + SMALIDIR + " " + DEXNAME;
-		boolean smaliSucc = Utils.execCmd(smaliCmd, false);
+		boolean smaliSucc = Utils.execCmd(smaliCmd, true);
 		if(!smaliSucc){
 			System.out.println("dex to smali is error!");
 			return;
@@ -93,7 +93,7 @@ public class Java2SmaliTools {
 			}
 		}
 		
-		//µÚËÄ²½£ºÉ¾³ıclassesÄ¿Â¼
+		//ç¬¬å››æ­¥ï¼šåˆ é™¤classesç›®å½•
 		if(classDirFile.exists()){
 			classDirFile.delete();
 		}
